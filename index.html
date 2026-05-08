@@ -1,0 +1,2448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="FitQuest" />
+<title>FitQuest — Earn While You Train</title>
+<style>
+  :root {
+    --bg: #f7f5ef;
+    --surface: #ffffff;
+    --surface-2: #f1efe8;
+    --text: #2c2c2a;
+    --text-2: #5f5e5a;
+    --text-3: #888780;
+    --border: rgba(0,0,0,0.12);
+    --border-strong: rgba(0,0,0,0.22);
+    --primary: #639922;
+    --primary-dark: #3b6d11;
+    --primary-soft: #eaf3de;
+    --accent: #d85a30;
+    --accent-soft: #faece7;
+    --gold: #ef9f27;
+    --gold-soft: #faeeda;
+    --info: #378add;
+    --info-soft: #e6f1fb;
+    --purple: #7f77dd;
+    --purple-soft: #eeedfe;
+    --danger: #e24b4a;
+    --danger-soft: #fcebeb;
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 16px rgba(0,0,0,0.06);
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overscroll-behavior-y: contain;
+  }
+  button { font-family: inherit; cursor: pointer; }
+  input, select, textarea { font-family: inherit; }
+
+  /* Setup screen */
+  .setup-wrap, .login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .setup-card, .login-card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 32px 28px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow);
+    border: 0.5px solid var(--border);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .logo-mark {
+    width: 44px; height: 44px;
+    background: var(--primary);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 22px;
+  }
+  .logo-text { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .login-tag { text-align: center; color: var(--text-2); margin: 0 0 24px; font-size: 14px; }
+  .setup-instructions {
+    background: var(--info-soft);
+    color: #0c447c;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .setup-instructions a { color: #0c447c; font-weight: 600; }
+  .setup-instructions ol { margin: 8px 0 0; padding-left: 18px; }
+  .setup-instructions li { margin-bottom: 4px; }
+  .role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .role-btn {
+    padding: 18px 12px;
+    background: var(--surface-2);
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-2);
+    transition: all 0.15s;
+  }
+  .role-btn.active {
+    background: var(--primary-soft);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+  }
+  .role-btn-icon { font-size: 28px; display: block; margin-bottom: 4px; }
+  .field { margin-bottom: 14px; }
+  .field label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-2);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .field input, .field textarea, .field select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    background: var(--surface);
+    outline: none;
+    transition: border 0.15s;
+    font-family: inherit;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--primary); }
+  .field textarea { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; resize: vertical; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+  .btn-primary:hover { background: var(--primary-dark); }
+  .btn-secondary {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    color: var(--text-2);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+  .btn-mini {
+    padding: 7px 12px;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .btn-mini:hover { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-dark); }
+  .login-hint {
+    margin-top: 16px;
+    padding: 10px 12px;
+    background: var(--info-soft);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: #0c447c;
+    text-align: center;
+  }
+  .err-msg {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--danger-soft);
+    color: #791f1f;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+  }
+
+  /* App shell */
+  .app { display: none; min-height: 100vh; padding-bottom: 90px; }
+  .app.show { display: block; }
+  .topbar {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 50;
+    padding: 14px 20px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .topbar-title { font-size: 18px; font-weight: 600; }
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px 6px 6px;
+    background: var(--surface);
+    border-radius: 100px;
+    border: 0.5px solid var(--border);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700;
+  }
+  .avatar.admin { background: var(--purple); }
+  .logout-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-3);
+    font-size: 12px;
+    margin-left: 6px;
+    padding: 0;
+  }
+  .logout-btn:hover { color: var(--danger); }
+  .container { padding: 16px 20px; max-width: 760px; margin: 0 auto; }
+
+  .streak-banner {
+    background: linear-gradient(135deg, #ef9f27 0%, #d85a30 100%);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    color: white;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow);
+  }
+  .streak-flame {
+    font-size: 44px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  }
+  .streak-count { font-size: 32px; font-weight: 800; line-height: 1; }
+  .streak-label { font-size: 13px; opacity: 0.95; margin-top: 2px; }
+  .streak-msg { font-size: 13px; opacity: 0.9; margin-top: 6px; font-weight: 500; }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    border: 0.5px solid var(--border);
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin: 0 0 12px;
+  }
+  .section-h {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 22px 0 10px;
+    letter-spacing: -0.2px;
+  }
+
+  .ex-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .ex-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 16px 14px;
+    border: 0.5px solid var(--border);
+    position: relative;
+  }
+  .ex-icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .ex-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .ex-icon.pushup { background: var(--accent-soft); }
+  .ex-icon.situp { background: var(--info-soft); }
+  .ex-icon.chinup { background: var(--purple-soft); }
+  .ex-icon.running { background: var(--primary-soft); }
+  .info-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: none;
+    font-weight: 600;
+    color: var(--text-2);
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ex-name { font-size: 15px; font-weight: 600; margin: 4px 0 2px; }
+  .ex-rate { font-size: 11px; color: var(--text-3); margin-bottom: 10px; }
+  .ex-input-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ex-input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    font-size: 15px;
+    text-align: center;
+    -moz-appearance: textfield;
+    background: white;
+    min-width: 0;
+  }
+  .ex-input::-webkit-outer-spin-button,
+  .ex-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .ex-add {
+    padding: 8px 12px;
+    background: var(--text);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .ex-add:active { transform: scale(0.96); }
+  .ex-today {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--text-2);
+  }
+  .ex-today b { color: var(--primary-dark); }
+
+  .stats-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .stat-tile {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 12px;
+    border: 0.5px solid var(--border);
+    text-align: center;
+  }
+  .stat-num { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .stat-num.money { color: var(--primary-dark); }
+  .stat-lab { font-size: 11px; color: var(--text-3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  .log-list { max-height: 260px; overflow-y: auto; margin: 0 -2px; }
+  .log-list.tall { max-height: 420px; }
+  .log-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 4px;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .log-item:hover { background: var(--surface-2); }
+  .log-item:last-child { border-bottom: none; }
+  .log-left { display: flex; align-items: center; gap: 10px; }
+  .log-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .log-dot.pushup { background: var(--accent); }
+  .log-dot.situp { background: var(--info); }
+  .log-dot.chinup { background: var(--purple); }
+  .log-dot.running { background: var(--primary); }
+  .log-time { font-size: 11px; color: var(--text-3); }
+  .log-amt { font-weight: 600; color: var(--primary-dark); font-size: 13px; }
+  .edit-hint {
+    font-size: 13px;
+    color: var(--text-3);
+    width: 18px;
+    text-align: center;
+  }
+  .log-empty { text-align: center; padding: 20px; color: var(--text-3); font-size: 13px; }
+
+  .browser-controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .browser-controls select {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 13px;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .tabbar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface);
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    z-index: 60;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 10px 4px 12px;
+    color: var(--text-3);
+    font-size: 11px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .tab svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; }
+  .tab.active { color: var(--primary-dark); }
+
+  .modal-bg {
+    position: fixed; inset: 0;
+    background: rgba(20, 20, 18, 0.5);
+    z-index: 100;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-bg.show { display: flex; }
+  .modal {
+    background: var(--surface);
+    width: 100%;
+    max-width: 540px;
+    border-radius: 24px 24px 0 0;
+    padding: 8px 0 24px;
+    max-height: 88vh;
+    overflow-y: auto;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: var(--border-strong);
+    border-radius: 2px;
+    margin: 8px auto 16px;
+  }
+  .modal-body { padding: 0 24px; }
+  .modal-h {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: -0.3px;
+  }
+  .modal-sub { color: var(--text-2); font-size: 14px; margin: 0 0 18px; }
+  .guide-section { margin-bottom: 20px; }
+  .guide-section h4 {
+    font-size: 12px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .guide-list {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+  .guide-list li {
+    padding: 6px 0 6px 26px;
+    position: relative;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .guide-list li::before {
+    content: '';
+    position: absolute;
+    left: 4px; top: 13px;
+    width: 14px; height: 14px;
+    background: var(--primary-soft);
+    border-radius: 50%;
+  }
+  .guide-list li::after {
+    content: '✓';
+    position: absolute;
+    left: 6px; top: 6px;
+    color: var(--primary-dark);
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .guide-list.bad li::before { background: var(--danger-soft); }
+  .guide-list.bad li::after { content: '✕'; color: var(--danger); }
+
+  .preview-box {
+    background: var(--primary-soft);
+    color: var(--primary-dark);
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin: 10px 0 14px;
+  }
+
+  .report-tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--surface-2);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 16px;
+  }
+  .report-tab {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-2);
+  }
+  .report-tab.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  }
+  .chart-wrap {
+    height: 200px;
+    margin: 8px 0 4px;
+    position: relative;
+  }
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .summary-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border-radius: 10px;
+  }
+  .summary-row .lab { font-size: 13px; color: var(--text-2); }
+  .summary-row .val { font-weight: 700; font-size: 15px; }
+
+  .payout-card {
+    background: linear-gradient(135deg, #639922 0%, #3b6d11 100%);
+    color: white;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .payout-amt {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin: 4px 0;
+  }
+  .payout-sub { opacity: 0.9; font-size: 13px; }
+  .payout-meta {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    font-size: 12px;
+    opacity: 0.95;
+  }
+  .pay-btn {
+    margin-top: 14px;
+    width: 100%;
+    padding: 14px;
+    background: white;
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .pay-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .history-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .history-row:last-child { border-bottom: none; }
+  .history-date { font-size: 14px; font-weight: 500; }
+  .history-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .history-amt { font-weight: 700; color: var(--primary-dark); }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-left: 6px;
+  }
+  .badge.paid { background: var(--primary-soft); color: var(--primary-dark); }
+  .badge.pending { background: var(--gold-soft); color: #633806; }
+
+  .admin-row {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .admin-row:last-child { border-bottom: none; }
+  .admin-row .ex-icon { width: 38px; height: 38px; font-size: 20px; border-radius: 10px; }
+  .admin-name { font-weight: 600; font-size: 14px; }
+  .admin-unit { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+
+  .rate-group { margin-bottom: 16px; }
+  .rate-group-h {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .rate-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--surface-2);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    gap: 10px;
+  }
+  .rate-amt { font-weight: 600; font-size: 14px; color: var(--text); }
+  .rate-date { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+  .rate-note { font-size: 11px; color: var(--text-2); margin-top: 4px; font-style: italic; }
+
+  .toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    transition: all 0.25s;
+    pointer-events: none;
+    z-index: 200;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    max-width: 90vw;
+    text-align: center;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .toast.success { background: var(--primary-dark); }
+
+  .heat-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .heat-cell {
+    aspect-ratio: 1;
+    background: var(--surface-2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    color: var(--text-3);
+    position: relative;
+  }
+  .heat-cell.l1 { background: #c0dd97; }
+  .heat-cell.l2 { background: #97c459; }
+  .heat-cell.l3 { background: #639922; color: white; font-weight: 600; }
+  .heat-cell.l4 { background: #3b6d11; color: white; font-weight: 600; }
+  .heat-cell.today { box-shadow: inset 0 0 0 2px var(--accent); }
+
+  .page { display: none; }
+  .page.show { display: block; }
+
+  .empty-state {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--text-3);
+  }
+
+  .info-banner {
+    background: var(--info-soft);
+    color: #0c447c;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  @media (min-width: 768px) {
+    .ex-grid { grid-template-columns: repeat(4, 1fr); }
+    .container { padding: 20px 24px; }
+  }
+
+  @media (max-width: 360px) {
+    .stat-num { font-size: 18px; }
+    .ex-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Setup Screen ===== -->
+<div id="setupScreen" class="setup-wrap" style="display:none;">
+  <div class="setup-card">
+    <div class="logo">
+      <div class="logo-mark">F</div>
+      <div class="logo-text">FitQuest</div>
+    </div>
+    <p class="login-tag">One-time cloud setup</p>
+
+    <div class="setup-instructions">
+      <b>Don't have a Supabase project yet?</b>
+      <ol>
+        <li>Go to <a href="https://supabase.com" target="_blank">supabase.com</a> and sign up (free).</li>
+        <li>Click <b>New Project</b>. Pick any name and password.</li>
+        <li>Open <b>SQL Editor</b> → paste the SQL from the README → Run.</li>
+        <li>Open <b>Project Settings → API</b> → copy <b>Project URL</b> and <b>anon public</b> key below.</li>
+      </ol>
+    </div>
+
+    <div class="field">
+      <label for="cfgUrl">Supabase Project URL</label>
+      <input type="text" id="cfgUrl" placeholder="https://xxxxxxxx.supabase.co" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label for="cfgKey">Supabase anon public key</label>
+      <textarea id="cfgKey" rows="4" placeholder="eyJhbGciOiJIUzI1NiIs..."></textarea>
+    </div>
+
+    <div class="err-msg" id="setupError"></div>
+
+    <button class="btn-primary" onclick="saveSetup()">Connect</button>
+    <button class="btn-secondary" onclick="resetSetup()">Clear & start over</button>
+  </div>
+</div>
+
+<!-- ===== Login Screen ===== -->
+<div id="loginScreen" class="login-wrap" style="display:none;">
+  <div class="login-card">
+    <div class="logo">
+      <div class="logo-mark">F</div>
+      <div class="logo-text">FitQuest</div>
+    </div>
+    <p class="login-tag">Train hard. Earn smart.</p>
+
+    <div class="role-grid">
+      <button class="role-btn active" data-role="user" onclick="selectRole('user')">
+        <span class="role-btn-icon">🏋️</span>
+        Athlete
+      </button>
+      <button class="role-btn" data-role="admin" onclick="selectRole('admin')">
+        <span class="role-btn-icon">👨‍💼</span>
+        Parent / Admin
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="loginName">Name</label>
+      <input type="text" id="loginName" placeholder="Enter your name" autocomplete="off" />
+    </div>
+
+    <div class="field">
+      <label for="loginPin">PIN (4 digits)</label>
+      <input type="password" id="loginPin" placeholder="••••" maxlength="4" inputmode="numeric" />
+    </div>
+
+    <button class="btn-primary" onclick="doLogin()">Continue</button>
+
+    <div class="login-hint" id="loginHint">
+      First time as Admin? Set up a PIN now.
+    </div>
+
+    <button class="btn-secondary" onclick="resetSetup()" style="margin-top:14px;">Reconfigure cloud connection</button>
+  </div>
+</div>
+
+<!-- ===== Main App ===== -->
+<div id="app" class="app">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Today</div>
+    <div class="user-pill">
+      <div class="avatar" id="topAvatar">A</div>
+      <span id="topName">Athlete</span>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+  </div>
+
+  <div id="page-today" class="page show">
+    <div class="container">
+      <div class="streak-banner">
+        <div class="streak-flame">🔥</div>
+        <div style="flex:1">
+          <div class="streak-count" id="streakCount">0</div>
+          <div class="streak-label">day streak</div>
+          <div class="streak-msg" id="streakMsg">Start your first workout today!</div>
+        </div>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat-tile">
+          <div class="stat-num" id="statTodayReps">0</div>
+          <div class="stat-lab">Today's reps</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num" id="statTodayMiles">0</div>
+          <div class="stat-lab">Miles today</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num money" id="statTodayEarned">$0.00</div>
+          <div class="stat-lab">Earned today</div>
+        </div>
+      </div>
+
+      <h2 class="section-h">Log a workout</h2>
+      <div class="ex-grid" id="exGrid"></div>
+
+      <div class="card">
+        <div class="card-title">Today's log</div>
+        <div class="info-banner">✎ Tap any entry to edit the count, change the time, or delete it.</div>
+        <div class="log-list" id="todayLog"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Edit older entries</div>
+        <div class="browser-controls">
+          <select id="browserExerciseFilter" onchange="setBrowserExercise(this.value)"></select>
+          <select id="browserRangeFilter" onchange="setBrowserRange(this.value)">
+            <option value="7">Last 7 days</option>
+            <option value="30" selected>Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last year</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+        <div class="log-list tall" id="browserList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-reports" class="page">
+    <div class="container">
+      <div class="report-tabs">
+        <button class="report-tab active" data-period="day" onclick="setReportPeriod('day')">Daily</button>
+        <button class="report-tab" data-period="week" onclick="setReportPeriod('week')">Weekly</button>
+        <button class="report-tab" data-period="month" onclick="setReportPeriod('month')">Monthly</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title" id="reportPeriodLabel">This week</div>
+        <div class="chart-wrap">
+          <canvas id="reportChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Activity calendar — last 4 weeks</div>
+        <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:4px; font-size:10px; color:var(--text-3); text-align:center; margin-top:6px;">
+          <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+        </div>
+        <div class="heat-grid" id="heatGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Breakdown</div>
+        <div id="reportBreakdown"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-allowance" class="page">
+    <div class="container">
+      <div class="payout-card">
+        <div class="payout-sub">Pending this week</div>
+        <div class="payout-amt" id="pendingAmt">$0.00</div>
+        <div class="payout-sub" id="payoutDays">Payout on Sunday</div>
+        <div class="payout-meta" id="payoutMeta"></div>
+        <button class="pay-btn" id="payBtn" onclick="payoutWeek()">Mark as paid</button>
+      </div>
+
+      <h3 class="section-h">Payout history</h3>
+      <div class="card">
+        <div id="historyList"></div>
+      </div>
+
+      <h3 class="section-h">Lifetime stats</h3>
+      <div class="stats-strip">
+        <div class="stat-tile">
+          <div class="stat-num money" id="lifeEarned">$0.00</div>
+          <div class="stat-lab">Total earned</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num" id="lifeReps">0</div>
+          <div class="stat-lab">Total reps</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num" id="lifeMiles">0</div>
+          <div class="stat-lab">Miles run</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="page-rates" class="page">
+    <div class="container">
+      <div class="card">
+        <div class="card-title">Current rates</div>
+        <p style="font-size:13px; color:var(--text-2); margin:0 0 12px;">
+          Each exercise's rate. Click <b>+ New rate</b> to schedule a change starting on a date you choose.
+        </p>
+        <div id="currentRatesList"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Rate history</div>
+        <p style="font-size:13px; color:var(--text-2); margin:0 0 12px;">
+          Each entry uses the rate that was in effect on the day it was logged. Tap any rate to edit.
+        </p>
+        <div id="rateHistoryList"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Athlete account</div>
+        <p style="font-size:13px; color:var(--text-2); margin:0 0 8px;">
+          The athlete signs in with this name and PIN.
+        </p>
+        <div class="field">
+          <label>Athlete name</label>
+          <input type="text" id="athleteNameInput" />
+        </div>
+        <div class="field">
+          <label>Athlete PIN (4 digits)</label>
+          <input type="password" id="athletePinInput" maxlength="4" inputmode="numeric" />
+        </div>
+        <button class="btn-primary" onclick="saveAthlete()">Update athlete account</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Data</div>
+        <button class="btn-primary" style="background:var(--info); margin-bottom:8px;" onclick="exportData()">Export all data (JSON backup)</button>
+        <button class="btn-primary" style="background:var(--danger); margin-top:8px;" onclick="resetAll()">Reset all workout data</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Cloud connection</div>
+        <p style="font-size:13px; color:var(--text-2); margin:0 0 8px;">
+          Connected to: <span style="font-family:monospace; font-size:12px;" id="cfgUrlDisplay"></span>
+        </p>
+        <button class="btn-secondary" onclick="resetSetup()">Disconnect & reconfigure</button>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tabbar" id="tabbar"></nav>
+</div>
+
+<!-- Modals -->
+<div class="modal-bg" id="guideModal" onclick="closeGuide(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-body" id="guideBody"></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="editModal" onclick="closeEditModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <h2 class="modal-h" id="editTitle">Edit entry</h2>
+      <p class="modal-sub" id="editSub"></p>
+      <div class="field">
+        <label>Amount</label>
+        <input type="number" id="editAmount" min="0" step="any" inputmode="decimal" />
+      </div>
+      <div class="field">
+        <label>Date & time</label>
+        <input type="datetime-local" id="editDateTime" />
+      </div>
+      <div class="preview-box" id="editPreview">—</div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-primary" onclick="saveEdit()">Save</button>
+        <button class="btn-primary" style="background:var(--danger);" onclick="deleteEntry()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="rateModal" onclick="closeRateModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-body">
+      <h2 class="modal-h" id="rateModalTitle">New rate</h2>
+      <p class="modal-sub" id="rateModalSub"></p>
+      <input type="hidden" id="rateExerciseId" />
+      <div class="field-row">
+        <div class="field">
+          <label>Rate ($ per unit)</label>
+          <input type="number" id="rateAmountInput" min="0" step="0.001" inputmode="decimal" placeholder="0.01" />
+        </div>
+        <div class="field">
+          <label>Effective from</label>
+          <input type="date" id="rateDateInput" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Note (optional)</label>
+        <input type="text" id="rateNoteInput" placeholder="e.g. raise for 100-rep milestone" />
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button class="btn-primary" onclick="saveRate()">Save rate</button>
+        <button class="btn-primary" id="rateDeleteBtn" style="background:var(--danger); display:none;" onclick="deleteRate()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Supabase JS client (UMD) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="window._supabaseFailed=true"></script>
+<!-- Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" onerror="window._chartFailed=true"></script>
+<script>
+  // Show clear error if CDN scripts didn't load
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      var problems = [];
+      if (typeof window.supabase === 'undefined') problems.push('Supabase library (cdn.jsdelivr.net)');
+      if (typeof window.Chart === 'undefined') problems.push('Chart.js library (cdnjs.cloudflare.com)');
+      if (problems.length > 0) {
+        document.body.innerHTML = '<div style="font-family:-apple-system,sans-serif;max-width:600px;margin:60px auto;padding:30px;background:#fff;border-radius:14px;box-shadow:0 4px 20px rgba(0,0,0,0.1);"><h2 style="color:#d85a30;margin-top:0;">Could not load required libraries</h2><p>FitQuest needs an internet connection the first time you open it because it loads two external libraries:</p><ul>' + problems.map(function(p){return '<li>'+p+'</li>'}).join('') + '</ul><p><b>Try this:</b></p><ol><li>Check that your Wi-Fi or mobile data is on.</li><li>Reload this page (pull down or press Cmd+R / F5).</li><li>If it still fails, your network may be blocking these CDNs. Try a different network.</li></ol><p style="color:#888;font-size:13px;margin-top:24px;">Once loaded, FitQuest caches in your browser and works offline for that session.</p></div>';
+      }
+    }, 3000);
+  });
+  // Catch any uncaught script errors and show them
+  window.addEventListener('error', function(e) {
+    if (e.error && e.error.message) {
+      var existing = document.getElementById('boot-error');
+      if (existing) return;
+      var div = document.createElement('div');
+      div.id = 'boot-error';
+      div.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#d85a30;color:white;padding:14px 20px;font-family:-apple-system,sans-serif;font-size:13px;z-index:9999;';
+      div.innerHTML = '<b>FitQuest startup error:</b> ' + (e.error.message || e.message) + '<br><span style="opacity:0.85;font-size:11px;">' + (e.filename ? e.filename.split('/').pop() : '') + ' line ' + (e.lineno || '?') + '</span>';
+      document.body.appendChild(div);
+    }
+  });
+</script>
+<script>
+// ============================================================
+// FitQuest v2.1 — Cloud-synced fitness tracker
+// New in v2.1:
+//   • Rate history with effective dates (rates can change over time;
+//     each entry uses the rate that was effective on its date)
+//   • Athletes and Admins can both edit/delete past entries
+//   • All-time entry browser on Today tab to find old entries
+// ============================================================
+
+const CONFIG_KEY = 'fitquest_supabase_config_v2';
+
+// Default exercise definitions
+const EXERCISES = [
+  {
+    id: 'pushup', name: 'Push-ups', unit: 'reps', unitShort: 'rep',
+    icon: '💪', cls: 'pushup', defaultRate: 0.01,
+    guide: {
+      summary: 'A classic upper-body exercise that builds chest, shoulders, triceps, and core strength.',
+      steps: [
+        'Start in a high plank: hands shoulder-width apart, directly under your shoulders.',
+        'Keep your body in a straight line from head to heels — no sagging hips, no piked butt.',
+        'Lower yourself until your chest is about a fist away from the floor.',
+        'Keep elbows at roughly 45° from your body (not flared straight out).',
+        'Push back up to the starting position, fully extending your arms.',
+        'Breathe in on the way down, breathe out as you push up.'
+      ],
+      avoid: [
+        'Letting your hips sag toward the floor or stick up in the air.',
+        'Flaring elbows out wide — this stresses the shoulder joint.',
+        'Half-reps — go all the way down to count it.',
+        'Looking up — keep your neck neutral, eyes on the floor.'
+      ],
+      tip: 'Too hard? Drop to your knees. Too easy? Slow it down (3 seconds down, 1 second up).'
+    }
+  },
+  {
+    id: 'situp', name: 'Sit-ups', unit: 'reps', unitShort: 'rep',
+    icon: '🧘', cls: 'situp', defaultRate: 0.01,
+    guide: {
+      summary: 'Builds your abs and hip flexors. Quality matters more than speed.',
+      steps: [
+        'Lie flat on your back, knees bent at about 90°, feet flat on the floor.',
+        'Place hands lightly behind your ears or crossed on your chest — do NOT pull on your neck.',
+        'Engage your abs and curl your upper body up toward your knees.',
+        'Lift until your chest comes close to your thighs (or as far as comfortable).',
+        'Lower back down with control — don\'t just flop down.',
+        'Exhale on the way up, inhale on the way down.'
+      ],
+      avoid: [
+        'Yanking on your neck with your hands — sore neck means bad form.',
+        'Using momentum or jerking your body up.',
+        'Holding your breath the whole rep.',
+        'Letting your feet lift off the ground (anchor them or have someone hold them).'
+      ],
+      tip: 'If your neck hurts, you\'re using neck muscles instead of abs. Slow down and focus on curling from the belly.'
+    }
+  },
+  {
+    id: 'chinup', name: 'Chin-ups', unit: 'reps', unitShort: 'rep',
+    icon: '🏋️', cls: 'chinup', defaultRate: 0.01,
+    guide: {
+      summary: 'One of the best upper-body exercises — builds back, biceps, and grip strength.',
+      steps: [
+        'Grip the bar with palms facing you (underhand grip), hands about shoulder-width apart.',
+        'Hang with arms fully extended — this is the start position.',
+        'Pull yourself up by driving your elbows down and back.',
+        'Continue until your chin is clearly above the bar.',
+        'Lower yourself with control to a full hang — don\'t just drop.',
+        'Keep your core tight — no big leg swings or kipping.'
+      ],
+      avoid: [
+        'Using leg swing or momentum to fake reps (this is "kipping" — it doesn\'t count).',
+        'Stopping halfway up — chin must clear the bar.',
+        'Not going all the way back down (partial reps build less strength).',
+        'Shrugging your shoulders up to your ears — keep them down and back.'
+      ],
+      tip: 'Can\'t do one yet? Use a chair to assist, or do "negatives" — jump up and lower yourself slowly (5 seconds down).'
+    }
+  },
+  {
+    id: 'running', name: 'Running', unit: 'miles', unitShort: 'mi',
+    icon: '🏃', cls: 'running', defaultRate: 0.05,
+    guide: {
+      summary: 'The simplest cardio there is. Build endurance gradually — don\'t sprint right out of the gate.',
+      steps: [
+        'Warm up first with a 3–5 minute brisk walk or light jog.',
+        'Land with your foot under your hip — not way out in front of you.',
+        'Keep a slight forward lean from your ankles, not your waist.',
+        'Relax your shoulders and arms. Hands loose, like holding potato chips you don\'t want to crush.',
+        'Breathe rhythmically — try 3 steps inhale, 2 steps exhale.',
+        'Cool down with a 3–5 minute walk after you finish.'
+      ],
+      avoid: [
+        'Heel-striking hard with a straight leg — this jars your knees.',
+        'Holding tension in your fists, jaw, or shoulders.',
+        'Increasing your weekly distance by more than ~10% — common cause of injury.',
+        'Skipping rest days. Your body builds endurance during recovery, not during runs.'
+      ],
+      tip: 'New to running? Try the "talk test": you should be able to say a full sentence without gasping. If not, slow down.'
+    }
+  }
+];
+
+// ============================================================
+// State
+// ============================================================
+let sb = null;  // Supabase client instance
+let cfg = null;
+let state = {
+  admin: null,
+  athlete: null,
+  rateHistory: [],  // [{ id, exerciseId, rate, effectiveDate, note }] sorted by date asc
+  entries: [],      // [{ id, exerciseId, amount, rate, ts, week }]
+  payouts: []
+};
+let session = { role: null, name: '' };
+let currentEditEntry = null;
+let currentEditRate = null;
+let reportPeriod = 'week';
+let reportChart = null;
+let realtimeChannel = null;
+let browserFilter = { exercise: 'all', range: '30' }; // for the entry browser
+
+// ============================================================
+// Supabase config & client setup
+// ============================================================
+function loadConfig() {
+  try {
+    const raw = localStorage.getItem(CONFIG_KEY);
+    if (raw) cfg = JSON.parse(raw);
+  } catch (e) { cfg = null; }
+}
+
+function saveConfig(url, anonKey) {
+  cfg = { url: url.trim(), anonKey: anonKey.trim() };
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(cfg));
+}
+
+function clearConfig() {
+  localStorage.removeItem(CONFIG_KEY);
+  cfg = null;
+}
+
+function initSupabase() {
+  if (!cfg) return false;
+  try {
+    sb = window.supabase.createClient(cfg.url, cfg.anonKey);
+    return true;
+  } catch (e) {
+    console.error('Supabase init failed', e);
+    return false;
+  }
+}
+
+// ============================================================
+// Boot flow
+// ============================================================
+async function boot() {
+  loadConfig();
+  if (!cfg) {
+    showSetupScreen();
+    return;
+  }
+  if (!initSupabase()) {
+    showSetupScreen('Could not initialize Supabase. Check your URL and key.');
+    return;
+  }
+  try {
+    await refreshAllFromCloud();
+    showLoginScreen();
+  } catch (e) {
+    console.error(e);
+    showSetupScreen('Could not connect to Supabase. Did you run the SQL setup script? Error: ' + e.message);
+  }
+}
+
+function showSetupScreen(errorMsg) {
+  document.getElementById('setupScreen').style.display = 'flex';
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').classList.remove('show');
+  if (errorMsg) {
+    const el = document.getElementById('setupError');
+    el.textContent = errorMsg;
+    el.style.display = 'block';
+  }
+  if (cfg) {
+    document.getElementById('cfgUrl').value = cfg.url;
+    document.getElementById('cfgKey').value = cfg.anonKey;
+  }
+}
+
+function showLoginScreen() {
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').classList.remove('show');
+  selectRole('user');
+}
+
+async function saveSetup() {
+  const url = document.getElementById('cfgUrl').value.trim();
+  const key = document.getElementById('cfgKey').value.trim();
+  if (!url || !key) return showToast('Both URL and API key are required');
+  if (!url.startsWith('https://') || !url.includes('.supabase.co')) {
+    return showToast('URL should look like https://xxxx.supabase.co');
+  }
+  saveConfig(url, key);
+  showToast('Saved — testing connection...', 'success');
+  document.getElementById('setupError').style.display = 'none';
+  await boot();
+}
+
+function resetSetup() {
+  if (!confirm('Disconnect from Supabase? You will need to re-enter the URL and key.')) return;
+  clearConfig();
+  location.reload();
+}
+
+// ============================================================
+// Cloud read/write
+// ============================================================
+async function refreshAllFromCloud() {
+  // Accounts
+  const { data: accounts, error: aErr } = await sb.from('accounts').select('*');
+  if (aErr) throw aErr;
+  state.admin = accounts.find(a => a.role === 'admin') || null;
+  state.athlete = accounts.find(a => a.role === 'athlete') || null;
+
+  // Rate history
+  const { data: rateRows, error: rErr } = await sb.from('rate_history').select('*');
+  if (rErr) throw rErr;
+  state.rateHistory = rateRows.map(r => ({
+    id: r.id,
+    exerciseId: r.exercise_id,
+    rate: parseFloat(r.rate),
+    effectiveDate: r.effective_date,  // 'YYYY-MM-DD' string from Postgres DATE
+    note: r.note
+  })).sort((a, b) => a.effectiveDate.localeCompare(b.effectiveDate));
+
+  // Entries
+  const { data: entries, error: eErr } = await sb.from('entries')
+    .select('*').order('ts', { ascending: true });
+  if (eErr) throw eErr;
+  state.entries = entries.map(e => ({
+    id: e.id,
+    exerciseId: e.exercise_id,
+    amount: parseFloat(e.amount),
+    rate: parseFloat(e.rate),
+    ts: e.ts,
+    week: e.week
+  }));
+
+  // Payouts
+  const { data: payouts, error: pErr } = await sb.from('payouts')
+    .select('*').order('paid_at', { ascending: false });
+  if (pErr) throw pErr;
+  state.payouts = payouts.map(p => ({
+    id: p.id,
+    weekKey: p.week_key,
+    amount: parseFloat(p.amount),
+    paidAt: p.paid_at,
+    breakdown: p.breakdown
+  }));
+}
+
+async function ensureDefaultRates() {
+  // Insert defaults only if no history exists at all
+  const { data, error } = await sb.from('rate_history').select('id').limit(1);
+  if (error) throw error;
+  if (data && data.length > 0) return;
+  const today = isoDate(new Date());
+  const rows = EXERCISES.map(e => ({
+    exercise_id: e.id, rate: e.defaultRate, effective_date: today, note: 'Initial rate'
+  }));
+  const { error: insErr } = await sb.from('rate_history').insert(rows);
+  if (insErr) throw insErr;
+}
+
+// ============================================================
+// Rate-by-date lookup
+// ============================================================
+function rateForDate(exerciseId, date) {
+  // date can be Date or string. Convert to YYYY-MM-DD for comparison.
+  const dStr = typeof date === 'string' ? date.slice(0, 10) : isoDate(date);
+  const candidates = state.rateHistory
+    .filter(r => r.exerciseId === exerciseId && r.effectiveDate <= dStr);
+  if (candidates.length === 0) {
+    // No applicable history → fall back to default
+    const ex = EXERCISES.find(e => e.id === exerciseId);
+    return ex ? ex.defaultRate : 0;
+  }
+  return candidates[candidates.length - 1].rate;  // already sorted asc, last = most recent
+}
+
+function currentRate(exerciseId) {
+  return rateForDate(exerciseId, new Date());
+}
+
+// ============================================================
+// Realtime
+// ============================================================
+function subscribeRealtime() {
+  if (realtimeChannel) sb.removeChannel(realtimeChannel);
+  realtimeChannel = sb.channel('fitquest-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'entries' }, async () => {
+      await refreshAllFromCloud(); rerenderCurrentPage();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'payouts' }, async () => {
+      await refreshAllFromCloud(); rerenderCurrentPage();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'rate_history' }, async () => {
+      await refreshAllFromCloud(); rerenderCurrentPage();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'accounts' }, async () => {
+      await refreshAllFromCloud();
+    })
+    .subscribe();
+}
+
+function rerenderCurrentPage() {
+  const active = document.querySelector('.page.show');
+  if (!active) return;
+  const id = active.id.replace('page-', '');
+  if (id === 'today') renderToday();
+  else if (id === 'reports') renderReports();
+  else if (id === 'allowance') renderAllowance();
+  else if (id === 'rates') renderAdmin();
+}
+
+// ============================================================
+// Login
+// ============================================================
+function selectRole(role) {
+  document.querySelectorAll('.role-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.role === role);
+  });
+  const hint = document.getElementById('loginHint');
+  if (role === 'admin') {
+    if (!state.admin) hint.textContent = 'First time as Admin? Choose a name and a 4-digit PIN — saved to the cloud.';
+    else hint.textContent = `Welcome back, ${state.admin.name}. Enter your PIN to continue.`;
+  } else {
+    if (state.athlete) hint.textContent = `Athlete account: ${state.athlete.name}.`;
+    else hint.textContent = 'No athlete account yet. Ask your parent to create one in Admin → Settings.';
+  }
+}
+
+async function doLogin() {
+  const role = document.querySelector('.role-btn.active').dataset.role;
+  const name = document.getElementById('loginName').value.trim();
+  const pin = document.getElementById('loginPin').value.trim();
+
+  if (!name) return showToast('Enter a name');
+  if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showToast('PIN must be 4 digits');
+
+  if (role === 'admin') {
+    if (!state.admin) {
+      try {
+        const { error } = await sb.from('accounts')
+          .upsert({ role: 'admin', name, pin }, { onConflict: 'role' });
+        if (error) throw error;
+        state.admin = { role: 'admin', name, pin };
+        await ensureDefaultRates();
+        await refreshAllFromCloud();
+        showToast('Admin account created!', 'success');
+      } catch (e) { return showToast('Could not save: ' + e.message); }
+    } else {
+      if (state.admin.pin !== pin) return showToast('Wrong PIN');
+      if (state.admin.name.toLowerCase() !== name.toLowerCase()) return showToast('Wrong name for admin');
+    }
+  } else {
+    if (!state.athlete) return showToast('No athlete account exists. Ask Admin to set one up.');
+    if (state.athlete.name.toLowerCase() !== name.toLowerCase()) return showToast('Athlete name doesn\'t match');
+    if (state.athlete.pin !== pin) return showToast('Wrong PIN');
+  }
+
+  session = { role, name };
+  enterApp();
+}
+
+function logout() {
+  session = { role: null, name: '' };
+  if (realtimeChannel) {
+    sb.removeChannel(realtimeChannel);
+    realtimeChannel = null;
+  }
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('loginPin').value = '';
+}
+
+function enterApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('app').classList.add('show');
+  const av = document.getElementById('topAvatar');
+  av.textContent = session.name.charAt(0).toUpperCase();
+  av.classList.toggle('admin', session.role === 'admin');
+  document.getElementById('topName').textContent = session.name;
+  buildTabBar();
+  subscribeRealtime();
+  if (session.role === 'admin') showPage('rates');
+  else showPage('today');
+}
+
+// ============================================================
+// Tab bar
+// ============================================================
+function buildTabBar() {
+  const bar = document.getElementById('tabbar');
+  const tabs = session.role === 'admin' ? [
+    { id: 'rates', label: 'Rates', icon: 'M12 2v20M2 12h20' },
+    { id: 'today', label: 'Today', icon: 'M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11' },
+    { id: 'reports', label: 'Reports', icon: 'M3 3v18h18M9 17V9M14 17V5M19 17v-7' },
+    { id: 'allowance', label: 'Allowance', icon: 'M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6' }
+  ] : [
+    { id: 'today', label: 'Today', icon: 'M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11' },
+    { id: 'reports', label: 'Reports', icon: 'M3 3v18h18M9 17V9M14 17V5M19 17v-7' },
+    { id: 'allowance', label: 'Allowance', icon: 'M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6' }
+  ];
+  bar.innerHTML = tabs.map(t => `
+    <button class="tab" data-page="${t.id}" onclick="showPage('${t.id}')">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="${t.icon}"/></svg>
+      ${t.label}
+    </button>
+  `).join('');
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('show'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('show');
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.page === id);
+  });
+  const titles = { today: 'Today', reports: 'Reports', allowance: 'Allowance', rates: 'Admin · Rates' };
+  document.getElementById('pageTitle').textContent = titles[id] || '';
+  if (id === 'today') renderToday();
+  if (id === 'reports') renderReports();
+  if (id === 'allowance') renderAllowance();
+  if (id === 'rates') renderAdmin();
+}
+
+// ============================================================
+// Today / Log
+// ============================================================
+function renderToday() {
+  const grid = document.getElementById('exGrid');
+  const todayEntries = entriesForDay(new Date());
+
+  grid.innerHTML = EXERCISES.map(e => {
+    const todayTotal = todayEntries.filter(en => en.exerciseId === e.id).reduce((s, en) => s + en.amount, 0);
+    const todayEarn = todayTotal * currentRate(e.id);
+    return `
+      <div class="ex-card">
+        <div class="ex-icon-row">
+          <div class="ex-icon ${e.cls}">${e.icon}</div>
+          <button class="info-btn" onclick="openGuide('${e.id}')" title="Form guide">i</button>
+        </div>
+        <div class="ex-name">${e.name}</div>
+        <div class="ex-rate">${formatRate(e, currentRate(e.id))}</div>
+        <div class="ex-input-row">
+          <input class="ex-input" type="number" min="0" step="${e.unit === 'miles' ? '0.1' : '1'}"
+                 inputmode="decimal" id="input-${e.id}" placeholder="0" />
+          <button class="ex-add" onclick="logExercise('${e.id}')">Add</button>
+        </div>
+        <div class="ex-today">
+          Today: <b>${formatAmount(todayTotal, e.unit)}</b> · earned <b>${money(todayEarn)}</b>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const totalReps = todayEntries.filter(en => en.exerciseId !== 'running').reduce((s, en) => s + en.amount, 0);
+  const totalMiles = todayEntries.filter(en => en.exerciseId === 'running').reduce((s, en) => s + en.amount, 0);
+  const totalEarn = todayEntries.reduce((s, en) => s + en.amount * en.rate, 0);
+
+  document.getElementById('statTodayReps').textContent = totalReps;
+  document.getElementById('statTodayMiles').textContent = totalMiles.toFixed(1);
+  document.getElementById('statTodayEarned').textContent = money(totalEarn);
+
+  const streak = currentStreak();
+  document.getElementById('streakCount').textContent = streak;
+  document.getElementById('streakMsg').textContent = streakMessage(streak, todayEntries.length > 0);
+
+  // Today's log
+  const log = document.getElementById('todayLog');
+  if (todayEntries.length === 0) {
+    log.innerHTML = '<div class="log-empty">No workouts logged yet today. Pick an exercise above to start!</div>';
+  } else {
+    log.innerHTML = renderEntryListHtml([...todayEntries].reverse());
+  }
+
+  // All-entries browser
+  renderEntryBrowser();
+}
+
+function renderEntryListHtml(entries) {
+  return entries.map(en => {
+    const ex = EXERCISES.find(x => x.id === en.exerciseId);
+    const earned = en.amount * en.rate;
+    return `
+      <div class="log-item" onclick="openEdit('${en.id}')">
+        <div class="log-left">
+          <div class="log-dot ${ex.cls}"></div>
+          <div>
+            <div>${formatAmount(en.amount, ex.unit)} ${ex.name.toLowerCase()}</div>
+            <div class="log-time">${formatDateTime(en.ts)}</div>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="log-amt">+${money(earned)}</div>
+          <span class="edit-hint">✎</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderEntryBrowser() {
+  const select = document.getElementById('browserExerciseFilter');
+  if (select && !select.dataset.populated) {
+    select.innerHTML = '<option value="all">All exercises</option>' +
+      EXERCISES.map(e => `<option value="${e.id}">${e.icon} ${e.name}</option>`).join('');
+    select.dataset.populated = 'true';
+    select.value = browserFilter.exercise;
+    document.getElementById('browserRangeFilter').value = browserFilter.range;
+  }
+
+  const now = new Date();
+  let cutoff;
+  if (browserFilter.range === 'all') cutoff = new Date(0);
+  else { cutoff = new Date(now); cutoff.setDate(cutoff.getDate() - parseInt(browserFilter.range, 10)); cutoff.setHours(0,0,0,0); }
+
+  let filtered = state.entries.filter(en => new Date(en.ts) >= cutoff);
+  if (browserFilter.exercise !== 'all') filtered = filtered.filter(en => en.exerciseId === browserFilter.exercise);
+  filtered.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+
+  const list = document.getElementById('browserList');
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="log-empty">No matching entries. Try widening the date range.</div>';
+  } else {
+    // Limit display for performance
+    const display = filtered.slice(0, 200);
+    list.innerHTML = renderEntryListHtml(display);
+    if (filtered.length > 200) {
+      list.innerHTML += `<div class="log-empty">Showing 200 most recent of ${filtered.length}. Narrow your filter to see more.</div>`;
+    }
+  }
+}
+
+function setBrowserExercise(val) { browserFilter.exercise = val; renderEntryBrowser(); }
+function setBrowserRange(val) { browserFilter.range = val; renderEntryBrowser(); }
+
+async function logExercise(id) {
+  const input = document.getElementById('input-' + id);
+  const val = parseFloat(input.value);
+  if (!val || val <= 0) return showToast('Enter a number greater than 0');
+  const ex = EXERCISES.find(x => x.id === id);
+  const ts = new Date().toISOString();
+  const rate = currentRate(id);
+  const row = { exercise_id: id, amount: val, rate, ts, week: weekKey(new Date()) };
+  try {
+    const { data, error } = await sb.from('entries').insert(row).select().single();
+    if (error) throw error;
+    state.entries.push({ id: data.id, exerciseId: id, amount: val, rate, ts, week: row.week });
+    input.value = '';
+    showToast(`+${formatAmount(val, ex.unit)} · ${money(val * rate)}`, 'success');
+    renderToday();
+  } catch (e) {
+    showToast('Save failed: ' + e.message);
+  }
+}
+
+// ============================================================
+// Reports
+// ============================================================
+function setReportPeriod(p) {
+  reportPeriod = p;
+  document.querySelectorAll('.report-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.period === p);
+  });
+  renderReports();
+}
+
+function renderReports() {
+  const labels = { day: "Last 7 days", week: "Last 8 weeks", month: "Last 6 months" };
+  document.getElementById('reportPeriodLabel').textContent = labels[reportPeriod];
+  drawReportChart(buildReportData(reportPeriod));
+  renderHeatGrid();
+  const range = currentReportRange(reportPeriod);
+  const inRange = state.entries.filter(en => {
+    const t = new Date(en.ts).getTime();
+    return t >= range.start.getTime() && t <= range.end.getTime();
+  });
+
+  let html = '<div class="summary-grid">';
+  EXERCISES.forEach(ex => {
+    const items = inRange.filter(en => en.exerciseId === ex.id);
+    const total = items.reduce((s, en) => s + en.amount, 0);
+    const earned = items.reduce((s, en) => s + en.amount * en.rate, 0);
+    html += `
+      <div class="summary-row">
+        <div>
+          <div class="lab"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${dotColor(ex.id)};margin-right:6px;"></span>${ex.name}</div>
+          <div class="lab" style="font-size:11px;margin-top:2px;">${formatAmount(total, ex.unit)}</div>
+        </div>
+        <div class="val">${money(earned)}</div>
+      </div>
+    `;
+  });
+  html += '</div>';
+  const grandTotal = inRange.reduce((s, en) => s + en.amount * en.rate, 0);
+  html += `
+    <div class="summary-row" style="margin-top:12px; background:var(--primary-soft);">
+      <div class="lab" style="font-weight:700; color:var(--primary-dark);">Total earned</div>
+      <div class="val" style="color:var(--primary-dark); font-size:18px;">${money(grandTotal)}</div>
+    </div>
+  `;
+  document.getElementById('reportBreakdown').innerHTML = html;
+}
+
+function buildReportData(period) {
+  const buckets = [];
+  const now = new Date();
+  if (period === 'day') {
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(now); d.setDate(d.getDate() - i); d.setHours(0,0,0,0);
+      buckets.push({ label: d.toLocaleDateString('en-US', { weekday: 'short' }), date: d });
+    }
+  } else if (period === 'week') {
+    for (let i = 7; i >= 0; i--) {
+      const d = new Date(now); d.setDate(d.getDate() - i*7);
+      const ws = startOfWeek(d);
+      buckets.push({ label: 'W' + (8 - i), date: ws, weekKey: weekKey(ws) });
+    }
+  } else {
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      buckets.push({
+        label: d.toLocaleDateString('en-US', { month: 'short' }),
+        date: d,
+        monthKey: `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`
+      });
+    }
+  }
+  const datasets = EXERCISES.map(ex => ({
+    label: ex.name,
+    backgroundColor: dotColor(ex.id),
+    borderColor: dotColor(ex.id),
+    data: buckets.map(b => {
+      let entries;
+      if (period === 'day') {
+        entries = entriesForDay(b.date).filter(e => e.exerciseId === ex.id);
+      } else if (period === 'week') {
+        entries = state.entries.filter(e => weekKey(new Date(e.ts)) === b.weekKey && e.exerciseId === ex.id);
+      } else {
+        entries = state.entries.filter(e => {
+          const dt = new Date(e.ts);
+          const mk = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}`;
+          return mk === b.monthKey && e.exerciseId === ex.id;
+        });
+      }
+      return entries.reduce((s, e) => s + e.amount * e.rate, 0);
+    })
+  }));
+  return { labels: buckets.map(b => b.label), datasets };
+}
+
+function drawReportChart({ labels, datasets }) {
+  const ctx = document.getElementById('reportChart').getContext('2d');
+  if (reportChart) reportChart.destroy();
+  reportChart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 }, padding: 10 } },
+        tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}` } }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { stacked: true, grid: { color: 'rgba(0,0,0,0.05)' },
+             ticks: { font: { size: 11 }, callback: (v) => '$' + v.toFixed(2) } }
+      }
+    }
+  });
+}
+
+function renderHeatGrid() {
+  const grid = document.getElementById('heatGrid');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dayOfWeek = today.getDay();
+  const endDate = new Date(today); endDate.setDate(endDate.getDate() + (6 - dayOfWeek));
+  const startDate = new Date(endDate); startDate.setDate(startDate.getDate() - 27);
+  const cells = [];
+  for (let i = 0; i < 28; i++) {
+    const d = new Date(startDate); d.setDate(d.getDate() + i);
+    const isToday = d.getTime() === today.getTime();
+    const isFuture = d.getTime() > today.getTime();
+    const entries = entriesForDay(d);
+    const totalReps = entries.filter(e => e.exerciseId !== 'running').reduce((s,e) => s + e.amount, 0);
+    const totalMiles = entries.filter(e => e.exerciseId === 'running').reduce((s,e) => s + e.amount, 0);
+    let level = 0;
+    const score = totalReps + totalMiles * 30;
+    if (score > 0) level = 1;
+    if (score >= 30) level = 2;
+    if (score >= 60) level = 3;
+    if (score >= 100) level = 4;
+    const cls = ['heat-cell'];
+    if (level > 0 && !isFuture) cls.push('l' + level);
+    if (isToday) cls.push('today');
+    cells.push(`<div class="${cls.join(' ')}" title="${d.toDateString()}">${isFuture ? '' : d.getDate()}</div>`);
+  }
+  grid.innerHTML = cells.join('');
+}
+
+// ============================================================
+// Allowance
+// ============================================================
+function renderAllowance() {
+  const today = new Date();
+  const thisWeekKey = weekKey(today);
+  const thisWeekEntries = state.entries.filter(e => e.week === thisWeekKey);
+  const pending = thisWeekEntries.reduce((s, e) => s + e.amount * e.rate, 0);
+  document.getElementById('pendingAmt').textContent = money(pending);
+
+  const dayIdx = today.getDay();
+  const daysToSunday = dayIdx === 0 ? 0 : (7 - dayIdx);
+  const labelEl = document.getElementById('payoutDays');
+  if (dayIdx === 0) labelEl.textContent = 'Payout day! Tap below to confirm payment.';
+  else labelEl.textContent = `Payout in ${daysToSunday} day${daysToSunday !== 1 ? 's' : ''} (Sunday)`;
+
+  const meta = document.getElementById('payoutMeta');
+  let metaHtml = '';
+  EXERCISES.forEach(ex => {
+    const items = thisWeekEntries.filter(e => e.exerciseId === ex.id);
+    if (items.length === 0) return;
+    const total = items.reduce((s, e) => s + e.amount, 0);
+    const earn = items.reduce((s, e) => s + e.amount * e.rate, 0);
+    metaHtml += `<div style="display:flex;justify-content:space-between;padding:3px 0;">
+      <span>${ex.icon} ${formatAmount(total, ex.unit)} ${ex.name.toLowerCase()}</span>
+      <span>${money(earn)}</span>
+    </div>`;
+  });
+  if (!metaHtml) metaHtml = '<div style="opacity:0.85;">No workouts logged this week yet.</div>';
+  meta.innerHTML = metaHtml;
+
+  const payBtn = document.getElementById('payBtn');
+  const alreadyPaid = state.payouts.some(p => p.weekKey === thisWeekKey);
+  if (session.role !== 'admin') {
+    payBtn.style.display = 'none';
+  } else {
+    payBtn.style.display = 'block';
+    if (alreadyPaid) { payBtn.textContent = 'Already paid this week'; payBtn.disabled = true; }
+    else if (pending <= 0) { payBtn.textContent = 'Nothing to pay yet'; payBtn.disabled = true; }
+    else if (dayIdx !== 0) { payBtn.textContent = `Pay early (${money(pending)})`; payBtn.disabled = false; }
+    else { payBtn.textContent = `Mark ${money(pending)} as paid`; payBtn.disabled = false; }
+  }
+
+  const histList = document.getElementById('historyList');
+  const pastWeeks = uniquePastWeeks();
+  const rows = pastWeeks.map(wk => {
+    const paid = state.payouts.find(p => p.weekKey === wk.key);
+    return { key: wk.key, label: wk.label, amount: wk.total, paid: !!paid, paidAt: paid ? paid.paidAt : null };
+  });
+  if (rows.length === 0) histList.innerHTML = '<div class="log-empty">No payout history yet — keep training!</div>';
+  else histList.innerHTML = rows.map(r => `
+    <div class="history-row">
+      <div>
+        <div class="history-date">${r.label}
+          ${r.paid ? '<span class="badge paid">Paid</span>' : '<span class="badge pending">Pending</span>'}
+        </div>
+        <div class="history-sub">${r.paid ? 'Paid ' + new Date(r.paidAt).toLocaleDateString() : 'Awaiting payout'}</div>
+      </div>
+      <div class="history-amt">${money(r.amount)}</div>
+    </div>
+  `).join('');
+
+  const lifeEarn = state.entries.reduce((s, e) => s + e.amount * e.rate, 0);
+  const lifeReps = state.entries.filter(e => e.exerciseId !== 'running').reduce((s, e) => s + e.amount, 0);
+  const lifeMiles = state.entries.filter(e => e.exerciseId === 'running').reduce((s, e) => s + e.amount, 0);
+  document.getElementById('lifeEarned').textContent = money(lifeEarn);
+  document.getElementById('lifeReps').textContent = lifeReps;
+  document.getElementById('lifeMiles').textContent = lifeMiles.toFixed(1);
+}
+
+async function payoutWeek() {
+  const thisWeekKey = weekKey(new Date());
+  const thisWeekEntries = state.entries.filter(e => e.week === thisWeekKey);
+  const total = thisWeekEntries.reduce((s, e) => s + e.amount * e.rate, 0);
+  if (total <= 0) return showToast('Nothing to pay this week');
+  const breakdown = {};
+  EXERCISES.forEach(ex => {
+    const items = thisWeekEntries.filter(e => e.exerciseId === ex.id);
+    breakdown[ex.id] = {
+      total: items.reduce((s, e) => s + e.amount, 0),
+      earned: items.reduce((s, e) => s + e.amount * e.rate, 0)
+    };
+  });
+  try {
+    const { data, error } = await sb.from('payouts').insert({
+      week_key: thisWeekKey, amount: total, paid_at: new Date().toISOString(), breakdown
+    }).select().single();
+    if (error) throw error;
+    state.payouts.unshift({
+      id: data.id, weekKey: thisWeekKey, amount: total, paidAt: data.paid_at, breakdown
+    });
+    showToast(`Paid ${money(total)}!`, 'success');
+    renderAllowance();
+  } catch (e) {
+    showToast('Could not save payout: ' + e.message);
+  }
+}
+
+function uniquePastWeeks() {
+  const map = {};
+  state.entries.forEach(e => {
+    if (!map[e.week]) map[e.week] = { key: e.week, total: 0 };
+    map[e.week].total += e.amount * e.rate;
+  });
+  const items = Object.values(map);
+  items.forEach(w => {
+    const start = weekStartFromKey(w.key);
+    const end = new Date(start); end.setDate(end.getDate() + 6);
+    w.label = `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+    w.start = start;
+  });
+  items.sort((a, b) => b.start - a.start);
+  return items;
+}
+
+// ============================================================
+// Admin — Rate History UI
+// ============================================================
+function renderAdmin() {
+  // Current rates summary
+  const currentList = document.getElementById('currentRatesList');
+  currentList.innerHTML = EXERCISES.map(ex => {
+    const r = currentRate(ex.id);
+    const history = state.rateHistory.filter(h => h.exerciseId === ex.id);
+    const since = history.length > 0 ? history[history.length - 1].effectiveDate : null;
+    return `
+      <div class="admin-row">
+        <div class="ex-icon ${ex.cls}">${ex.icon}</div>
+        <div>
+          <div class="admin-name">${ex.name}</div>
+          <div class="admin-unit">${formatRate(ex, r)}${since ? ' · since ' + prettyDate(since) : ''}</div>
+        </div>
+        <button class="btn-mini" onclick="openAddRate('${ex.id}')">+ New rate</button>
+      </div>
+    `;
+  }).join('');
+
+  // Full history list
+  renderRateHistoryList();
+
+  // Athlete account
+  document.getElementById('athleteNameInput').value = state.athlete ? state.athlete.name : '';
+  document.getElementById('athletePinInput').value = state.athlete ? state.athlete.pin : '';
+}
+
+function renderRateHistoryList() {
+  const list = document.getElementById('rateHistoryList');
+  // Group by exercise
+  const byEx = {};
+  EXERCISES.forEach(ex => byEx[ex.id] = []);
+  state.rateHistory.forEach(h => { if (byEx[h.exerciseId]) byEx[h.exerciseId].push(h); });
+  let html = '';
+  EXERCISES.forEach(ex => {
+    const items = byEx[ex.id].slice().reverse(); // newest first
+    if (items.length === 0) return;
+    html += `<div class="rate-group">
+      <div class="rate-group-h">
+        <span class="ex-icon ${ex.cls}" style="width:28px;height:28px;font-size:16px;border-radius:7px;">${ex.icon}</span>
+        ${ex.name}
+      </div>`;
+    items.forEach((h, idx) => {
+      const isLatest = idx === 0;
+      html += `
+        <div class="rate-row">
+          <div>
+            <div class="rate-amt">${formatRate(ex, h.rate)}</div>
+            <div class="rate-date">From ${prettyDate(h.effectiveDate)}${isLatest ? ' <span class="badge paid" style="margin-left:4px;">Current</span>' : ''}</div>
+            ${h.note ? `<div class="rate-note">${escapeHtml(h.note)}</div>` : ''}
+          </div>
+          <button class="btn-mini" onclick="openEditRate('${h.id}')">Edit</button>
+        </div>`;
+    });
+    html += `</div>`;
+  });
+  if (!html) html = '<div class="log-empty">No rates yet. Click "+ New rate" above to add one.</div>';
+  list.innerHTML = html;
+}
+
+function openAddRate(exerciseId) {
+  currentEditRate = null;
+  const ex = EXERCISES.find(e => e.id === exerciseId);
+  document.getElementById('rateModalTitle').textContent = `New rate · ${ex.name}`;
+  document.getElementById('rateModalSub').textContent = `Sets the rate per ${ex.unitShort} starting on a chosen date.`;
+  document.getElementById('rateExerciseId').value = exerciseId;
+  document.getElementById('rateAmountInput').value = currentRate(exerciseId);
+  document.getElementById('rateDateInput').value = isoDate(new Date());
+  document.getElementById('rateNoteInput').value = '';
+  document.getElementById('rateDeleteBtn').style.display = 'none';
+  document.getElementById('rateModal').classList.add('show');
+}
+
+function openEditRate(rateId) {
+  const h = state.rateHistory.find(r => r.id === rateId);
+  if (!h) return;
+  currentEditRate = h;
+  const ex = EXERCISES.find(e => e.id === h.exerciseId);
+  document.getElementById('rateModalTitle').textContent = `Edit rate · ${ex.name}`;
+  document.getElementById('rateModalSub').textContent = `Adjust an existing rate change. Updating it affects all entries on or after the new effective date (until the next rate change).`;
+  document.getElementById('rateExerciseId').value = h.exerciseId;
+  document.getElementById('rateAmountInput').value = h.rate;
+  document.getElementById('rateDateInput').value = h.effectiveDate;
+  document.getElementById('rateNoteInput').value = h.note || '';
+  document.getElementById('rateDeleteBtn').style.display = 'block';
+  document.getElementById('rateModal').classList.add('show');
+}
+
+function closeRateModal(ev) {
+  if (ev && ev.target.id !== 'rateModal') return;
+  document.getElementById('rateModal').classList.remove('show');
+  currentEditRate = null;
+}
+
+async function saveRate() {
+  const exerciseId = document.getElementById('rateExerciseId').value;
+  const amount = parseFloat(document.getElementById('rateAmountInput').value);
+  const dateStr = document.getElementById('rateDateInput').value;
+  const note = document.getElementById('rateNoteInput').value.trim();
+
+  if (isNaN(amount) || amount < 0) return showToast('Rate must be a non-negative number');
+  if (!dateStr) return showToast('Pick an effective date');
+
+  try {
+    if (currentEditRate) {
+      // Update existing
+      const { error } = await sb.from('rate_history').update({
+        rate: amount, effective_date: dateStr, note: note || null
+      }).eq('id', currentEditRate.id);
+      if (error) throw error;
+    } else {
+      // Insert new — upsert by (exercise_id, effective_date)
+      const { error } = await sb.from('rate_history').upsert({
+        exercise_id: exerciseId, rate: amount, effective_date: dateStr, note: note || null
+      }, { onConflict: 'exercise_id,effective_date' });
+      if (error) throw error;
+    }
+    await refreshAllFromCloud();
+    if (confirm('Rate saved. Recompute pay for affected past entries using the new rate history? (Recommended after adding or editing a rate.)')) {
+      await recomputeRates();
+    }
+    closeRateModal();
+    renderAdmin();
+    showToast('Rate saved!', 'success');
+  } catch (e) {
+    showToast('Could not save: ' + e.message);
+  }
+}
+
+async function deleteRate() {
+  if (!currentEditRate) return;
+  if (!confirm('Delete this rate change? Past entries that used this rate will fall back to the prior rate (or the default if none).')) return;
+  try {
+    const { error } = await sb.from('rate_history').delete().eq('id', currentEditRate.id);
+    if (error) throw error;
+    await refreshAllFromCloud();
+    if (confirm('Recompute pay for affected past entries using the updated rate history?')) {
+      await recomputeRates();
+    }
+    closeRateModal();
+    renderAdmin();
+    showToast('Rate deleted', 'success');
+  } catch (e) {
+    showToast('Delete failed: ' + e.message);
+  }
+}
+
+// Recompute rate snapshot for every entry based on current rate_history.
+// This is what makes a new "effective date" rate apply retroactively to entries
+// after that date but leave entries before it untouched (or update them if a
+// prior rate change covers them).
+async function recomputeRates() {
+  const updates = [];
+  state.entries.forEach(en => {
+    const newRate = rateForDate(en.exerciseId, en.ts);
+    if (Math.abs(newRate - en.rate) > 1e-9) {
+      updates.push({ id: en.id, rate: newRate });
+    }
+  });
+  if (updates.length === 0) {
+    showToast('No entries needed updating.', 'success');
+    return;
+  }
+  showToast(`Recomputing ${updates.length} entries...`);
+  // Run updates in parallel batches of ~25
+  for (let i = 0; i < updates.length; i += 25) {
+    const batch = updates.slice(i, i + 25);
+    await Promise.all(batch.map(u => sb.from('entries').update({ rate: u.rate }).eq('id', u.id)));
+  }
+  await refreshAllFromCloud();
+  showToast(`Updated ${updates.length} entries`, 'success');
+  rerenderCurrentPage();
+}
+
+async function saveAthlete() {
+  const name = document.getElementById('athleteNameInput').value.trim();
+  const pin = document.getElementById('athletePinInput').value.trim();
+  if (!name) return showToast('Athlete name is required');
+  if (pin.length !== 4 || !/^\d{4}$/.test(pin)) return showToast('PIN must be 4 digits');
+  try {
+    const { error } = await sb.from('accounts')
+      .upsert({ role: 'athlete', name, pin }, { onConflict: 'role' });
+    if (error) throw error;
+    state.athlete = { role: 'athlete', name, pin };
+    showToast('Athlete account updated!', 'success');
+  } catch (e) {
+    showToast('Could not save: ' + e.message);
+  }
+}
+
+async function exportData() {
+  await refreshAllFromCloud();
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `fitquest-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Backup downloaded', 'success');
+}
+
+async function resetAll() {
+  if (!confirm('This will delete ALL workouts and payouts in the cloud. Accounts and rates will be kept. Continue?')) return;
+  if (!confirm('Are you absolutely sure? This cannot be undone.')) return;
+  try {
+    const { error: e1 } = await sb.from('entries').delete().not('id', 'is', null);
+    if (e1) throw e1;
+    const { error: e2 } = await sb.from('payouts').delete().not('id', 'is', null);
+    if (e2) throw e2;
+    await refreshAllFromCloud();
+    showToast('All workout data cleared', 'success');
+    renderAdmin();
+  } catch (e) {
+    showToast('Reset failed: ' + e.message);
+  }
+}
+
+// ============================================================
+// Edit/delete entries
+// ============================================================
+function openEdit(entryId) {
+  const entry = state.entries.find(e => e.id === entryId);
+  if (!entry) return;
+  currentEditEntry = entry;
+  const ex = EXERCISES.find(x => x.id === entry.exerciseId);
+  document.getElementById('editTitle').textContent = `Edit · ${ex.name}`;
+  document.getElementById('editSub').textContent = `Originally logged ${formatDateTime(entry.ts)} at rate ${money(entry.rate)}/${ex.unitShort}`;
+  document.getElementById('editAmount').value = entry.amount;
+  // Pre-fill datetime-local with the entry's local datetime
+  document.getElementById('editDateTime').value = isoLocalDatetime(entry.ts);
+  updateEditPreview();
+  document.getElementById('editModal').classList.add('show');
+}
+
+function updateEditPreview() {
+  if (!currentEditEntry) return;
+  const ex = EXERCISES.find(x => x.id === currentEditEntry.exerciseId);
+  const newAmt = parseFloat(document.getElementById('editAmount').value);
+  const newDtVal = document.getElementById('editDateTime').value;
+  if (!newDtVal || isNaN(newAmt) || newAmt < 0) {
+    document.getElementById('editPreview').textContent = '—';
+    return;
+  }
+  const newTs = new Date(newDtVal);
+  const newRate = rateForDate(ex.id, newTs);
+  const newEarn = newAmt * newRate;
+  const rateChanged = Math.abs(newRate - currentEditEntry.rate) > 1e-9;
+  document.getElementById('editPreview').innerHTML =
+    `New pay: <b>${money(newEarn)}</b> (${formatAmount(newAmt, ex.unit)} × ${money(newRate)}/${ex.unitShort})` +
+    (rateChanged ? `<div style="font-size:11px;color:var(--text-3);margin-top:4px;">Rate changed because the new date falls under a different rate period.</div>` : '');
+}
+
+async function saveEdit() {
+  const v = parseFloat(document.getElementById('editAmount').value);
+  if (isNaN(v) || v < 0) return showToast('Invalid amount');
+  const dtVal = document.getElementById('editDateTime').value;
+  if (!dtVal) return showToast('Pick a date and time');
+  const newTs = new Date(dtVal).toISOString();
+  const newWeek = weekKey(new Date(newTs));
+  const newRate = rateForDate(currentEditEntry.exerciseId, newTs);
+
+  try {
+    const { error } = await sb.from('entries').update({
+      amount: v, ts: newTs, week: newWeek, rate: newRate
+    }).eq('id', currentEditEntry.id);
+    if (error) throw error;
+    currentEditEntry.amount = v;
+    currentEditEntry.ts = newTs;
+    currentEditEntry.week = newWeek;
+    currentEditEntry.rate = newRate;
+    closeEditModal();
+    showToast('Entry updated', 'success');
+    rerenderCurrentPage();
+  } catch (e) {
+    showToast('Update failed: ' + e.message);
+  }
+}
+
+async function deleteEntry() {
+  if (!confirm('Delete this entry? This cannot be undone.')) return;
+  try {
+    const { error } = await sb.from('entries').delete().eq('id', currentEditEntry.id);
+    if (error) throw error;
+    state.entries = state.entries.filter(e => e.id !== currentEditEntry.id);
+    closeEditModal();
+    showToast('Entry deleted', 'success');
+    rerenderCurrentPage();
+  } catch (e) {
+    showToast('Delete failed: ' + e.message);
+  }
+}
+
+function closeEditModal(ev) {
+  if (ev && ev.target.id !== 'editModal') return;
+  document.getElementById('editModal').classList.remove('show');
+  currentEditEntry = null;
+}
+
+// ============================================================
+// Exercise Guide Modal
+// ============================================================
+function openGuide(id) {
+  const ex = EXERCISES.find(x => x.id === id);
+  const g = ex.guide;
+  document.getElementById('guideBody').innerHTML = `
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+      <div class="ex-icon ${ex.cls}" style="width:52px; height:52px; font-size:28px;">${ex.icon}</div>
+      <div>
+        <h2 class="modal-h" style="margin:0;">${ex.name}</h2>
+        <p class="modal-sub" style="margin:2px 0 0;">${formatRate(ex, currentRate(ex.id))}</p>
+      </div>
+    </div>
+    <p style="font-size:14px; color:var(--text); margin:0 0 18px; line-height:1.55;">${g.summary}</p>
+    <div class="guide-section">
+      <h4>How to do it right</h4>
+      <ul class="guide-list">${g.steps.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+    <div class="guide-section">
+      <h4>Common mistakes to avoid</h4>
+      <ul class="guide-list bad">${g.avoid.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+    <div style="background:var(--info-soft); padding:12px 14px; border-radius:10px; font-size:13px; color:#0c447c;">
+      <b>Coach's tip:</b> ${g.tip}
+    </div>
+  `;
+  document.getElementById('guideModal').classList.add('show');
+}
+
+function closeGuide(ev) {
+  if (ev && ev.target.id !== 'guideModal') return;
+  document.getElementById('guideModal').classList.remove('show');
+}
+
+// ============================================================
+// Helpers
+// ============================================================
+function entriesForDay(date) {
+  const d = new Date(date); d.setHours(0,0,0,0);
+  const next = new Date(d); next.setDate(next.getDate() + 1);
+  return state.entries.filter(e => {
+    const t = new Date(e.ts);
+    return t >= d && t < next;
+  });
+}
+
+function startOfWeek(date) {
+  const d = new Date(date); d.setHours(0,0,0,0);
+  const day = d.getDay();
+  const offset = day === 0 ? 6 : day - 1;
+  d.setDate(d.getDate() - offset);
+  return d;
+}
+
+function weekKey(date) {
+  const ws = startOfWeek(date);
+  return `${ws.getFullYear()}-${String(ws.getMonth()+1).padStart(2,'0')}-${String(ws.getDate()).padStart(2,'0')}`;
+}
+
+function weekStartFromKey(key) {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function currentReportRange(period) {
+  const now = new Date(); now.setHours(23,59,59,999);
+  let start;
+  if (period === 'day') {
+    start = new Date(now); start.setDate(start.getDate() - 6); start.setHours(0,0,0,0);
+  } else if (period === 'week') {
+    start = startOfWeek(new Date()); start.setDate(start.getDate() - 7*7);
+  } else {
+    start = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+  }
+  return { start, end: now };
+}
+
+function currentStreak() {
+  let streak = 0;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let cursor = new Date(today);
+  if (entriesForDay(today).length === 0) cursor.setDate(cursor.getDate() - 1);
+  while (entriesForDay(cursor).length > 0) {
+    streak++;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
+}
+
+function streakMessage(streak, didToday) {
+  if (streak === 0) return "Start your first workout today!";
+  if (!didToday && streak > 0) return `Don't break your ${streak}-day streak — log a workout today!`;
+  if (streak === 1) return "Great start! Come back tomorrow to keep it going.";
+  if (streak < 3) return `Nice — ${streak} days in a row! Keep it up.`;
+  if (streak < 7) return `On fire! 🔥 ${streak} days strong.`;
+  if (streak < 14) return `Crushing it! A full week+ streak.`;
+  if (streak < 30) return `Legendary commitment — ${streak} days!`;
+  return `Champion mode — ${streak} days unbeaten!`;
+}
+
+function money(n) { return '$' + (Math.round(n * 100) / 100).toFixed(2); }
+
+function formatAmount(n, unit) {
+  if (unit === 'miles') return n.toFixed(1) + ' mi';
+  return Math.round(n) + ' reps';
+}
+
+function formatRate(ex, rate) {
+  if (rate === undefined) rate = currentRate(ex.id);
+  const cents = Math.round(rate * 100);
+  if (cents === rate * 100 && cents < 100) return `${cents}¢ per ${ex.unitShort}`;
+  return `${money(rate)} per ${ex.unitShort}`;
+}
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+}
+
+function formatDateTime(iso) {
+  const d = new Date(iso);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const dDay = new Date(d); dDay.setHours(0,0,0,0);
+  const isToday = dDay.getTime() === today.getTime();
+  const yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
+  const isYesterday = dDay.getTime() === yesterday.getTime();
+  const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  if (isToday) return `Today ${time}`;
+  if (isYesterday) return `Yesterday ${time}`;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' + time;
+}
+
+function prettyDate(isoDateStr) {
+  // 'YYYY-MM-DD' → 'Mon DD, YYYY'
+  const [y, m, d] = isoDateStr.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  return dt.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+
+function isoDate(date) {
+  // local-tz YYYY-MM-DD
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function isoLocalDatetime(iso) {
+  // Convert ISO string to a value that can populate <input type="datetime-local">
+  const d = new Date(iso);
+  const y = d.getFullYear();
+  const mo = String(d.getMonth() + 1).padStart(2, '0');
+  const da = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const mi = String(d.getMinutes()).padStart(2, '0');
+  return `${y}-${mo}-${da}T${h}:${mi}`;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function dotColor(id) {
+  return ({ pushup: '#d85a30', situp: '#378add', chinup: '#7f77dd', running: '#639922' })[id];
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ============================================================
+// Boot
+// ============================================================
+document.getElementById('loginPin').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('loginName').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('loginPin').focus();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('ex-input')) {
+    const id = e.target.id.replace('input-', '');
+    logExercise(id);
+  }
+});
+// Live preview when editing
+document.addEventListener('input', e => {
+  if (e.target.id === 'editAmount' || e.target.id === 'editDateTime') updateEditPreview();
+});
+
+boot();
+
+</script>
+<script>
+  const observer = new MutationObserver(() => {
+    const display = document.getElementById('cfgUrlDisplay');
+    if (display && cfg) display.textContent = cfg.url;
+  });
+  observer.observe(document.getElementById('app'), { attributes: true, attributeFilter: ['class'] });
+</script>
+</body>
+</html>
