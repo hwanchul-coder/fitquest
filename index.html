@@ -284,7 +284,7 @@
 
   .ex-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 12px;
     margin-bottom: 14px;
   }
@@ -747,13 +747,15 @@
   }
 
   @media (min-width: 768px) {
-    .ex-grid { grid-template-columns: repeat(4, 1fr); }
     .container { padding: 20px 24px; }
   }
 
   @media (max-width: 360px) {
     .stat-num { font-size: 18px; }
-    .ex-grid { grid-template-columns: 1fr; }
+    .ex-card { padding: 12px 10px; }
+    .ex-name { font-size: 14px; }
+    .ex-input { font-size: 14px; padding: 7px 8px; }
+    .ex-add { padding: 7px 10px; font-size: 12px; }
   }
 </style>
 </head>
